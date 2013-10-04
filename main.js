@@ -14,17 +14,28 @@ $(function() {
     $.get("http://congress.api.sunlightfoundation.com/legislators/locate?apikey=ba4d76d2f7ab45a5a08a28f3b7b42a94&zip=" + zip)
     .done(function(responseJSON) {
       responseJSON.results.forEach(function(legislator) {
-        $("#legislators").append("<tr>" + 
-          "<td>" + legislator.first_name + "</td>" + 
-          "<td>" + legislator.last_name + "</td>" + 
-          "<td>" + capitalize(legislator.chamber) + "</td>" + 
-          "<td>" + partyConvert(legislator.party) + "</td>" +
-          "<td>" + legislator.phone + "</td>" + 
-          "<td>" + "<a href='" + legislator.contact_form + "'</a>Email</td>" +
-          "<td>" + "<a href='" + legislator.website + "'</a>Website</td>" +  
-          "<td>" + "<a href='http://www.facebook.com/" + legislator.facebook_id + "'</a>Link</td>" +
-          "<td>" + "<a href='http://www.twitter.com/" + legislator.twitter_id + "'</a>Link</td>" +
-          "</tr>")
+        $("#legislators").append(
+          "<tr>" + 
+            "<td>" + legislator.first_name + "</td>" + 
+            "<td>" + legislator.last_name + "</td>" + 
+            "<td>" + capitalize(legislator.chamber) + "</td>" + 
+            "<td>" + partyConvert(legislator.party) + "</td>" +
+            "<td>" +
+            "<div class='btn-group'>" +
+            "<button type='button' class='btn btn-default dropdown-toggle btn-xs' data-toggle='dropdown'>" +
+            "Contact <span class='caret'></span>" +
+            "</button>" +
+              "<ul class='dropdown-menu' role='menu'>" +
+                "<li><a href='" + legislator.contact_form + "'</a>Email</a></li>" +
+                "<li><a href='" + legislator.website + "'</a>Website</a></li>" +
+                "<li class='divider'></li>" +
+                "<li><a href='http://www.facebook.com/" + legislator.facebook_id + "'</a>Facebook</a></li>" +
+                "<li><a href='http://www.twitter.com/" + legislator.twitter_id + "'</a>Twitter</a></li>" +
+              "</ul>" +
+            "</div>" +
+            "</td>" +
+          "</tr>"
+          )
       })
     })
     return false;
