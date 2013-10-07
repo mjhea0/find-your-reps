@@ -1,10 +1,16 @@
 $(function() {
-
     // hide danger upon page load
    $('.alert-danger').hide()
+   $('.alert-warning').hide()
 
   // perfrom search, append results
   $("form#get-zip").submit(function() {
+
+  if($("input, textarea").val() === ""){
+    $('.alert-danger').show()  
+    return false;
+  }
+  $("input").removeClass("error");
 
     //clear previous search results (if applicable)
     $("#legislators").empty()
@@ -13,11 +19,20 @@ $(function() {
     var zip = $("input#zip").val();
     $.get("http://congress.api.sunlightfoundation.com/legislators/locate?apikey=ba4d76d2f7ab45a5a08a28f3b7b42a94&zip=" + zip)
     .done(function(responseJSON) {
-      responseJSON.results.forEach(function(legislator) {
+      $('.alert-danger').hide() 
+        if(responseJSON.results.length === 0) {
+          $('.alert-warning').show() 
+        } else {
+
+          $('.alert-warning').hide() 
+
+          responseJSON.results.forEach(function(legislator) {
+
+
         $("#legislators").append(
           "<tr>" + 
-            "<td>" + legislator.first_name + "</td>" + 
-            "<td>" + legislator.last_name + "</td>" + 
+            "<td id='myAnchor'>" + legislator.first_name + "</td>" + 
+            "<td>" + legislator.last_name + "</td>" +
             "<td>" + capitalize(legislator.chamber) + "</td>" + 
             "<td>" + partyConvert(legislator.party) + "</td>" +
             "<td>" +
@@ -36,10 +51,14 @@ $(function() {
             "</td>" +
           "</tr>"
           )
-      })
+        })
+      }
     })
     return false;
   })
+
+
+
 
   //capitalize text for legislature chamber
   function capitalize(text) {
